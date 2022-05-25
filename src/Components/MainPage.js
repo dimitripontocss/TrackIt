@@ -57,6 +57,9 @@ export default function MainPage() {
     )
 }
 
+function Days({days}){
+    
+}
 
 function RenderHabit({value,deleteHabit}){
     console.log(value)
@@ -64,8 +67,8 @@ function RenderHabit({value,deleteHabit}){
     return(
         <Habit>
             <p>{value.name}</p>
-            <button onClick={() => deleteHabit(id)}></button>
-            <p>{value.days}</p>
+            <button onClick={() => deleteHabit(id)}><ion-icon name="trash-outline"></ion-icon></button>
+            <Days days={value.days} />
         </Habit>
     )
 }
@@ -82,6 +85,10 @@ button{
     position: absolute;
     top: 10px;
     right: 15px;
+    width: 30px;
+    font-size: 20px;
+    background-color: #FFFFFF;
+    border: 0;
 }
 `
 
