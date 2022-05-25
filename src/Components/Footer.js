@@ -14,7 +14,7 @@ export default function Footer(){
         {img === "" ? <></> :
         <Container>
             <Link to="/habitos" style={{ textDecoration: 'none', color: "#52B6FF" }} ><h3>Hábitos</h3></Link>
-            <Progresso><CircularProgressbar value={percentage} text="Hoje" 
+            <Link to="/hoje"><Progresso><CircularProgressbar value={percentage} text="Hoje" 
                 background
                 backgroundPadding={6}
                 styles={buildStyles({
@@ -24,7 +24,7 @@ export default function Footer(){
                     trailColor: "transparent",
                     textFont: 'Lexend Deca'
                 })}/>
-        </Progresso>
+        </Progresso></Link>
             <Link to="/historico" style={{ textDecoration: 'none', color: "#52B6FF"}} ><h3>Histórico</h3></Link>
         </Container>}
     </>
