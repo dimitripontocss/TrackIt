@@ -10,7 +10,6 @@ export default function MainPage() {
     const { token, setToken } = useContext(TokenContext)
     const { setImg } = useContext(InfosContext);
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user)
     setToken(user.token)
     setImg(user.image)
 
@@ -22,7 +21,6 @@ export default function MainPage() {
     const [loading,setLoading] = useState(false)
 
     function deleteHabit(id){
-        console.log(id)
         if(window.confirm("Você quer mesmo deletar?")){
             const deletePromise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, {
             headers: {
@@ -34,7 +32,6 @@ export default function MainPage() {
     }
 
     function selectDay(index){
-        console.log(index)
         if(selectedD.includes(index)){
             const newDays = selectedD.filter(function (f) { return f !== index })
             setSelectedD(newDays)
@@ -45,8 +42,8 @@ export default function MainPage() {
     }
 
     function createNHabit(){
-        console.log("entro",newHabit,selectedD)
         setLoading(true);
+        if(selectedD.length !==0){
         const promiseNewHabit = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
         {
             name: newHabit,
@@ -59,13 +56,15 @@ export default function MainPage() {
             }
         }
         )
-        promiseNewHabit.then(()=>{console.log(promiseNewHabit); setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(refresh + 4);setLoading(false)})
+        promiseNewHabit.then(()=>{setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(refresh + 4);setLoading(false)})
         .catch(()=>{alert("Não foi possível salvar seu hábito, verifique suas respostas e tente novamente.");setLoading(false)})
+        }else{
+            alert("Selecione ao menos um dia!")
+            setLoading(false)
+        }
     }
     
     useEffect(() => {
-        console.log("entrou")
-        console.log(token)
             const promiseHabits = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
@@ -75,7 +74,6 @@ export default function MainPage() {
         
     }, [refresh])
 
-    console.log(userHabits)
     return (
         <Container>
             <Topo>
@@ -96,7 +94,6 @@ export default function MainPage() {
 }
 
 function RenderHabit({value,deleteHabit}){
-    console.log(value)
     const arrDias = ["D","S","T","Q","Q","S","S"]
     const id = value.id;
     return(
@@ -112,7 +109,6 @@ function RenderHabit({value,deleteHabit}){
 }
 
 function Create({token,newHabit,setNewHabit,selectDay,setCreate,createNHabit,selectedD,loading,setLoading}){
-    console.log(token)
     const arrDias = ["D","S","T","Q","Q","S","S"]
     return(
         <>

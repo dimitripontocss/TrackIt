@@ -4,17 +4,18 @@ import InfosContext from "../Contexts/InfosContext";
 import { CircularProgressbar,buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import PercentContext from "../Contexts/PercentContext";
 
 export default function Footer(){
     const {img} = useContext(InfosContext)
-    const [percentage,setPercentage] = useState(0)
+    const { percent, setPercent } = useContext(PercentContext)
 
     return(
         <>
         {img === "" ? <></> :
         <Container>
             <Link to="/habitos" style={{ textDecoration: 'none', color: "#52B6FF" }} ><h3>Hábitos</h3></Link>
-            <Link to="/hoje"><Progresso><CircularProgressbar value={percentage} text="Hoje" 
+            <Link to="/hoje"><Progresso><CircularProgressbar value={percent*100} text="Hoje" 
                 background
                 backgroundPadding={6}
                 styles={buildStyles({

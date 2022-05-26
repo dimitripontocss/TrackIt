@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios";
 import dayjs from "dayjs"
+import PercentContext from "../Contexts/PercentContext";
 
 function translate(weekDay){
     if(weekDay === "Sunday"){
@@ -30,9 +31,24 @@ function translate(weekDay){
     }
 }
 
+function refreshCounter(data,setDone){
+    let aux = 0;
+    if(data.length === 0){
+        setDone("vazio")
+    }else{
+    for(let i=0;i<data.length;i++){
+        if(data[i].done === true){
+            aux++;
+        }
+    } 
+    setDone(aux);
+}
+}
+
 export default function Today(){
     const { token, setToken } = useContext(TokenContext);
     const { setImg } = useContext(InfosContext);
+    const { percent, setPercent } = useContext(PercentContext);
 
     const user = JSON.parse(localStorage.getItem("user"));
     setToken(user.token);
@@ -40,6 +56,8 @@ export default function Today(){
 
     const [dailyTasks, setDailyTasks] = useState([])
     const [loading, setLoading] = useState(true)
+    const [done,setDone] = useState(0);
+    const [refresh,setRefresh] = useState(0);
 
     const weekDay = dayjs().format("dddd");
     const diaDaSemana = translate(weekDay);
@@ -52,11 +70,16 @@ export default function Today(){
                     'Authorization': `Bearer ${user.token}`
                 }
             })
-            promiseHabits.then((response) => {setDailyTasks(response.data); setLoading(false)} );
+            promiseHabits.then((response) => {setDailyTasks(response.data); setLoading(false); refreshCounter(response.data,setDone)} );
         
-    }, [])
+    }, [refresh])
 
-    console.log(dailyTasks)
+    if(dailyTasks.length === 0){
+        setPercent(0);
+    }else{
+        setPercent(done / dailyTasks.length)
+    }
+
     return(
         <Container>
             <Topo>
@@ -64,7 +87,7 @@ export default function Today(){
                     <p>{diaDaSemana}, {day}/{month}</p> 
                 </Date>
                 <Progress>
-                    <p>Nenhum hábito concluído ainda</p>
+                    {done === "vazio" ? <p>Nenhum hábito concluído ainda</p> : percent === 0 ? <p>Nenhum hábito concluído ainda</p> : <span>{percent*100}% dos hábitos concluídos</span> }
                 </Progress>
             </Topo>
             <DailyHabits>
@@ -80,7 +103,7 @@ export default function Today(){
                                 : 
                                 <>
                                     {
-                                        dailyTasks.map((value,index)=> <Habit key={index} value={value}/>)
+                                        dailyTasks.map((value,index)=> <Habit key={index} value={value} token={token} refresh={refresh} setRefresh={setRefresh}/>)
                                     }
                                 </>
                 }
@@ -89,20 +112,44 @@ export default function Today(){
     )
 }
 
-function Habit({value}){
-    console.log(value)
+
+function check(id,token,refresh,setRefresh){
+const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,null,
+{
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
+promise.then(()=>setRefresh(refresh+1))
+}
+
+function unCheck(id,token,refresh,setRefresh){
+const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,null,
+{
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
+promise.then(()=>setRefresh(refresh+1))    
+}
+
+function Habit({value,token,refresh,setRefresh}){
     return(
         <Habito>
             <div>
                 <h2>{value.name}</h2>
-                <p>Sequência atual: {value.currentSequence}</p>
-                <p>Seu recorde: {value.highestSequence}</p>
+                <p>Sequência atual:{
+                  value.done ?  <Done>{value.currentSequence} dia(s)</Done> : <Undone>{value.currentSequence} dia(s)</Undone>}</p>
+                <p>Seu recorde: {
+                value.highestSequence ===0 ? <Undone>{value.highestSequence} dia(s)</Undone> : value.highestSequence === value.currentSequence ? <Done>{value.highestSequence} dia(s)</Done> : <Undone>{value.highestSequence} dia(s)</Undone>
+                }
+                </p>
             </div>
             <div>
                 { 
-                    value.done ?  <Done><ion-icon name="checkbox"></ion-icon></Done>
+                    value.done ?  <Done onClick={()=>unCheck(value.id,token,refresh,setRefresh)}><ion-icon name="checkbox"></ion-icon></Done>
                     :
-                    <Undone><ion-icon name="checkbox"></ion-icon></Undone>
+                    <Undone onClick={()=>check(value.id,token,refresh,setRefresh)}><ion-icon name="checkbox"></ion-icon></Undone>
                 }
             </div>
         </Habito>
@@ -110,12 +157,19 @@ function Habit({value}){
 }
 
 const Done = styled.div`
-font-size: 70px;
 color: #8FC549;
+margin-left: 3px;
+ion-icon{
+    font-size: 70px;
+}
 `
 const Undone = styled.div`
-font-size: 70px;
-color: #EBEBEB;
+color: #666666;
+margin-left: 3px;
+ion-icon{
+    font-size: 70px;
+    color: #EBEBEB;
+}
 `
 
 const Habito = styled.div`
@@ -147,6 +201,7 @@ p{
     color: #666666;
 
     margin-bottom: 4px;
+    display: flex;
 }
 `
 
@@ -161,6 +216,11 @@ p{
     font-family: 'Lexend Deca';
     font-size: 18px;
     color: #BABABA;
+}
+span{
+    font-family: 'Lexend Deca';
+    font-size: 18px;
+    color: #8FC549;
 }
 `
 const Date = styled.div`
@@ -179,6 +239,7 @@ align-items: center;
 justify-content: center;
 
 margin-top: 20px;
+margin-bottom: 85px;
 `
 const Load = styled.div`
     display: flex;
