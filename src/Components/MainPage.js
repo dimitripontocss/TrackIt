@@ -391,7 +391,7 @@ h2{
 const Habits = styled.div`
 display: flex;
 flex-direction: column;
-align-items: flex-start;
+align-items: center;
 
 margin-bottom: 65px;
 

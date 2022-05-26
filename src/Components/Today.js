@@ -210,6 +210,10 @@ margin-top: 95px;
 `
 const Topo = styled.div`
 margin-left: 20px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+
 `
 const Progress = styled.div`
 p{
