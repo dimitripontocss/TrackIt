@@ -1,5 +1,5 @@
 import { useContext,useState } from "react";
-import { useNavigate,Link, Navigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import TokenContext from "../Contexts/TokenContext";
 import InfosContext from "../Contexts/InfosContext";
 import styled from "styled-components";
@@ -42,10 +42,10 @@ export default function Login(){
             console.log(res.data);
             setToken(res.data.token);
             setImg(res.data.image);
-            navigate("/habitos");
             const user = JSON.stringify(res.data);
             console.log(user)
             localStorage.setItem("user", user);
+            navigate("/habitos");
           }).catch(()=>{alert("Não foi possível logar na sua conta, verifique seu dados e tente novamente!"); setLoading(false)});
     }
 
@@ -74,9 +74,20 @@ export default function Login(){
                 </form>
             }
             <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
+            <Infos>Site criado por Dimitri Daher Assis - Maio 2022</Infos>
         </Container>
     )
 }
+
+const Infos = styled.div`
+margin-top: 80px;
+
+font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+color: lightgray;
+`
 
 const Loads = styled.div`
 height: 45px;

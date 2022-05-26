@@ -1,17 +1,24 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import InfosContext from "../Contexts/InfosContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header(){
 
     const {img} = useContext(InfosContext)
-
+    const navigate = useNavigate();
+    function logOff(){
+        if(window.confirm("Voce quer mesmo sair?")){
+            localStorage.clear(); 
+            navigate("/");
+        }
+    }
     return(
         <>
         {img === "" ? <></> :
         <Container>
             <h1>TrackIt</h1>
-            <img src={img} alt="Foto de perfil do usuário" />
+            <div><img src={img} alt="Foto de perfil do usuário" /> <div onClick={logOff}><ion-icon name="exit-outline"></ion-icon></div> </div>
         </Container>}
     </>
     )
@@ -35,6 +42,10 @@ padding: 20px;
 
 box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
 
+    >div{
+        display: flex;
+        align-items: center;
+    }
     h1{
         font-family: 'Playball';
         font-size: 39px;
@@ -44,5 +55,10 @@ box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
         width: 51px;
         height: 51px;
         border-radius: 98.5px;
+        margin-right: 10px;
+    }
+    ion-icon{
+        font-size: 40px;
+        color: #FFFFFF;
     }
 `

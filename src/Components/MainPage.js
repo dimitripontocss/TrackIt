@@ -19,6 +19,7 @@ export default function MainPage() {
     const [newHabit,setNewHabit] = useState("")
     const [selectedD,setSelectedD] = useState([]);
     const [refresh,setRefresh] = useState(0)
+    const [loading,setLoading] = useState(false)
 
     function deleteHabit(id){
         console.log(id)
@@ -28,7 +29,7 @@ export default function MainPage() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        deletePromise.then(()=>{setToken(user.token); setRefresh(3)})
+        deletePromise.then(()=>{setToken(user.token); setRefresh(refresh +3)})
     }
     }
 
@@ -45,6 +46,7 @@ export default function MainPage() {
 
     function createNHabit(){
         console.log("entro",newHabit,selectedD)
+        setLoading(true);
         const promiseNewHabit = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
         {
             name: newHabit,
@@ -57,7 +59,8 @@ export default function MainPage() {
             }
         }
         )
-        promiseNewHabit.then(()=>{console.log(promiseNewHabit); setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(1)})
+        promiseNewHabit.then(()=>{console.log(promiseNewHabit); setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(refresh + 4);setLoading(false)})
+        .catch(()=>{alert("Não foi possível salvar seu hábito, verifique suas respostas e tente novamente.");setLoading(false)})
     }
     
     useEffect(() => {
@@ -81,7 +84,7 @@ export default function MainPage() {
                     <Add onClick={() => setCreate(true)}>+</Add>
                 </Box>
                 {!create ? <></> : <Create token={token} newHabit={newHabit} setNewHabit={setNewHabit}
-                selectDay={selectDay} setCreate={setCreate} createNHabit={createNHabit} selectedD={selectedD}/>}
+                selectDay={selectDay} setCreate={setCreate} createNHabit={createNHabit} selectedD={selectedD} loading={loading} setLoading={setLoading}/>}
             </Topo>
             <Habits>
                 {userHabits.length === 0 ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
@@ -92,21 +95,62 @@ export default function MainPage() {
     )
 }
 
-function Create({token,newHabit,setNewHabit,selectDay,setCreate,createNHabit,selectedD}){
+function RenderHabit({value,deleteHabit}){
+    console.log(value)
+    const arrDias = ["D","S","T","Q","Q","S","S"]
+    const id = value.id;
+    return(
+        <Habit>
+            <HAux>
+                <p>{value.name}</p>
+                <button onClick={() => deleteHabit(id)}><ion-icon name="trash-outline"></ion-icon></button>
+            </HAux>
+            <Dias>{arrDias.map((valor,index)=> <Days key={index} valor={valor} index={index} days={value.days} />)}
+            </Dias>
+        </Habit>
+    )
+}
+
+function Create({token,newHabit,setNewHabit,selectDay,setCreate,createNHabit,selectedD,loading,setLoading}){
     console.log(token)
     const arrDias = ["D","S","T","Q","Q","S","S"]
     return(
-        <Creator>
-            <input type="text" placeholder="nome do hábito" value={newHabit} 
-            onChange={e => setNewHabit(e.target.value)}/>
-            <Dias>
-                {arrDias.map((value,index) => <Dia key={index} value={value} index={index} selectDay={selectDay} selectedD={selectedD}/>)}
-            </Dias>
-            <Buttons>
-                <p onClick={()=>{setCreate(false)}}>Cancelar</p>
-                <button onClick={createNHabit}>Salvar</button>
-            </Buttons>
-        </Creator>
+        <>
+        {
+            loading 
+            ? 
+            <Loading>
+                <LoadInfo>{newHabit}</LoadInfo>
+                <Dias>
+                    {arrDias.map((value,index) => <Dia key={index} value={value} index={index} selectDay={selectDay} selectedD={selectedD}/>)}
+                </Dias>
+                <Buttons>
+                    <p>Cancelar</p>
+                    <button>
+                        <ThreeDots
+                            height="20"
+                            width="75"
+                            color='white'
+                            ariaLabel='loading'
+                        />
+                    </button>
+                </Buttons>
+            </Loading>
+            : 
+            <Creator>
+                <input type="text" placeholder="nome do hábito" value={newHabit} 
+                onChange={e => setNewHabit(e.target.value)}/>
+                <Dias>
+                    {arrDias.map((value,index) => <Dia key={index} value={value} index={index} selectDay={selectDay} selectedD={selectedD}/>)}
+                </Dias>
+                <Buttons>
+                    <p onClick={()=>{setCreate(false)}}>Cancelar</p>
+                    <button onClick={createNHabit}>Salvar</button>
+                </Buttons>
+            </Creator>
+        }
+        </>
+        
     )
 }
 
@@ -138,22 +182,40 @@ function Days({days,index,valor}){
     )
 }
 
-function RenderHabit({value,deleteHabit}){
-    console.log(value)
-    const arrDias = ["D","S","T","Q","Q","S","S"]
-    const id = value.id;
-    return(
-        <Habit>
-            <HAux>
-                <p>{value.name}</p>
-                <button onClick={() => deleteHabit(id)}><ion-icon name="trash-outline"></ion-icon></button>
-            </HAux>
-            <Dias>{arrDias.map((valor,index)=> <Days key={index} valor={valor} index={index} days={value.days} />)}
-            </Dias>
-        </Habit>
-    )
-}
+const Loading = styled.div`
+margin-top: 20px;
 
+padding: 10px;
+
+width: 320px;
+height: 150px;
+
+border: 0.5px solid #52B6FF;
+border-radius: 10px;
+
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+`
+
+const LoadInfo = styled.div`
+height: 45px;
+width: 270px;
+
+overflow: hidden;
+
+background: #F2F2F2;
+
+border: 1px solid #D5D5D5;
+border-radius: 5px;
+
+margin-bottom: 8px;
+padding: 10px;
+
+font-family: 'Lexend Deca';
+font-size: 20px;
+color: #B3B3B3;
+`
 
 const Creator = styled.div`
 margin-top: 20px;
@@ -180,10 +242,8 @@ input{
     padding: 10px;
 
     font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19.976px;
-    color: black;
+    font-size: 20px;
+    color: #666666;
  }
 
  input::placeholder{
@@ -336,6 +396,8 @@ const Habits = styled.div`
 display: flex;
 flex-direction: column;
 align-items: flex-start;
+
+margin-bottom: 65px;
 
 padding: 16px;
 p{

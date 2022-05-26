@@ -62,9 +62,20 @@ export default function Register(){
                 </form>
             }
             <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
+            <Infos>Site criado por Dimitri Daher Assis - Maio 2022</Infos>
         </Container>
     )
 }
+
+const Infos = styled.div`
+margin-top: 80px;
+
+font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+color: lightgray;
+`
 
 const Loads = styled.div`
 height: 45px;
