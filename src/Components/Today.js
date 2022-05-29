@@ -188,7 +188,7 @@ padding: 10px;
 margin-bottom: 15px;
 
 h2{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 20px;
     color: #666666;
 
@@ -196,7 +196,7 @@ h2{
 
 }
 p{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 13px;
     color: #666666;
 
@@ -217,19 +217,19 @@ align-items: flex-start;
 `
 const Progress = styled.div`
 p{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 18px;
     color: #BABABA;
 }
 span{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 18px;
     color: #8FC549;
 }
 `
 const Date = styled.div`
 p{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 23px;
     color: #126BA5;
 

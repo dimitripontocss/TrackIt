@@ -46,7 +46,7 @@ height: 70px;
 
 background-color: #FFFFFF;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-style: normal;
 font-weight: 400;
 font-size: 18px;

@@ -70,7 +70,7 @@ export default function Register(){
 const Infos = styled.div`
 margin-top: 80px;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-style: normal;
 font-weight: 400;
 font-size: 12px;
@@ -94,7 +94,7 @@ padding: 10px;
 display: flex;
 align-items: center;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-style: normal;
 font-weight: 400;
 font-size: 19.976px;
@@ -142,7 +142,7 @@ align-items: center;
     margin-bottom: 8px;
     padding: 10px;
 
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
@@ -150,7 +150,7 @@ align-items: center;
  }
 
  input::placeholder{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
@@ -162,13 +162,13 @@ align-items: center;
      border: 0;
      border-radius: 5px;
 
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 20px;
     color: #FFFFFF;
  }
  p{
     margin-top: 25px;
-    font-family: 'Lexend Deca'; 
+    font-family: 'Lexend Deca',sans-serif; 
     font-size: 13.976px;
     color: #52B6FF;
     text-decoration-line: underline;

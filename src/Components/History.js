@@ -31,14 +31,14 @@ align-items: flex-start;
 padding: 15px;
 
 h2{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 23px;
     color: #126BA5;
 
     margin-bottom: 15px;
 }
 p{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 18px;
     color: #666666;
 }

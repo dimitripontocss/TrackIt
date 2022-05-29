@@ -27,7 +27,7 @@ export default function MainPage() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        deletePromise.then(()=>{setToken(user.token); setRefresh(refresh +3)})
+        deletePromise.then(()=>{setToken(user.token); setRefresh(refresh+1)})
     }
     }
 
@@ -56,7 +56,7 @@ export default function MainPage() {
             }
         }
         )
-        promiseNewHabit.then(()=>{setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(refresh + 4);setLoading(false)})
+        promiseNewHabit.then(()=>{setCreate(false);setSelectedD([]);setNewHabit(""); setRefresh(refresh+1);setLoading(false)})
         .catch(()=>{alert("Não foi possível salvar seu hábito, verifique suas respostas e tente novamente.");setLoading(false)})
         }else{
             alert("Selecione ao menos um dia!")
@@ -208,7 +208,7 @@ border-radius: 5px;
 margin-bottom: 8px;
 padding: 10px;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-size: 20px;
 color: #B3B3B3;
 `
@@ -237,13 +237,13 @@ input{
     margin-bottom: 8px;
     padding: 10px;
 
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 20px;
     color: #666666;
  }
 
  input::placeholder{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
@@ -266,7 +266,7 @@ align-items: center;
 
 margin-right: 5px;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-size: 19.976px;
 color: #DBDBDB;
 `
@@ -285,7 +285,7 @@ align-items: center;
 
 margin-right: 5px;
 
-font-family: 'Lexend Deca';
+font-family: 'Lexend Deca',sans-serif;
 font-size: 19.976px;
 color: #FFFFFF;
 `
@@ -299,7 +299,7 @@ width: 100%;
 margin-top: 20px;
 
 p{
-    font-family: 'Lexend Deca'; 
+    font-family: 'Lexend Deca',sans-serif; 
     font-size: 16px;
     color: #52b6ff;
 }
@@ -312,7 +312,7 @@ button{
     border: 0;
     border-radius: 5px;
 
-    font-family: 'Lexend Deca'; 
+    font-family: 'Lexend Deca',sans-serif; 
     font-size: 16px;
     color: #ffffff;
 
@@ -382,7 +382,7 @@ align-items: center;
 
 
 h2{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 23px;
     color: #126ba5;
 }
@@ -397,7 +397,7 @@ margin-bottom: 65px;
 
 padding: 16px;
 p{
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca',sans-serif;
     font-size: 18px;
     color: #666666;
 }

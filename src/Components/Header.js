@@ -47,7 +47,7 @@ box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
         align-items: center;
     }
     h1{
-        font-family: 'Playball';
+        font-family: 'Playball',sans-serif;
         font-size: 39px;
         color: #FFFFFF;
     }
